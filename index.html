@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control de Leads · Clínica Kawoq</title>
+  <link rel="icon" type="image/png" href="img/logo-kawoq.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <!-- ============ PANTALLA 0 · INICIAR SESIÓN ============ -->
+  <section id="vista-ingreso" class="vista" hidden>
+    <div class="ingreso">
+      <img src="img/logo-kawoq.png" alt="Clínica Kawoq · Dra. Cindy Laines" class="ingreso-logo">
+      <h1>Control de Leads</h1>
+      <p class="sub">Dra. Cindy Laines · Médico Fisiatra</p>
+      <form id="form-ingreso" class="tarjeta" novalidate>
+        <label for="ing-usuario">Usuario</label>
+        <input id="ing-usuario" autocomplete="username" required>
+        <label for="ing-clave">Clave</label>
+        <div class="campo-clave">
+          <input id="ing-clave" type="password" autocomplete="current-password" required>
+          <button type="button" id="ver-clave" class="btn-ojo" aria-label="Mostrar clave">Ver</button>
+        </div>
+        <p id="ing-error" class="aviso-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn-primario btn-bloque" id="btn-entrar">Entrar</button>
+      </form>
+      <p class="pie-seguro">Acceso solo para usuarias autorizadas</p>
+    </div>
+  </section>
+
+  <!-- ============ PANTALLA 1 · HOY TOCA ============ -->
+  <section id="vista-app" class="vista" hidden>
+    <header class="encabezado">
+      <img src="img/logo-kawoq.png" alt="Clínica Kawoq" class="enc-logo">
+      <div class="enc-texto">
+        <h1>Control de Leads</h1>
+        <p class="sub">Dra. Cindy Laines · Médico Fisiatra</p>
+      </div>
+      <button class="btn btn-claro" id="btn-salir">Salir</button>
+    </header>
+
+    <main class="contenido">
+      <p id="aviso-demo" class="aviso-demo" hidden>Copia de demostración: solo contiene pacientes ficticios.</p>
+      <button class="btn btn-primario btn-bloque" id="btn-nuevo">+ Nuevo lead</button>
+
+      <div class="contadores" id="contadores"></div>
+
+      <nav class="pestanas" role="tablist">
+        <button role="tab" data-tab="hoy" class="activa">Hoy toca</button>
+        <button role="tab" data-tab="todos">Todos</button>
+        <button role="tab" data-tab="cerrados">Cerrados</button>
+      </nav>
+
+      <input type="search" id="buscar" class="buscador" placeholder="Buscar por nombre o teléfono…" aria-label="Buscar">
+      <div id="filtros" class="filtros" hidden></div>
+      <div id="lista" aria-live="polite"></div>
+    </main>
+  </section>
+
+  <!-- ============ PANTALLA 2 · NUEVO LEAD / EDITAR ============ -->
+  <dialog id="dlg-lead" class="hoja">
+    <form id="form-lead" novalidate>
+      <div class="hoja-enc">
+        <h2 id="lead-titulo">Nuevo lead</h2>
+        <button type="button" class="btn btn-claro" data-cerrar>Cancelar</button>
+      </div>
+      <div class="hoja-cuerpo">
+        <fieldset class="bloque">
+          <legend>Datos del contacto</legend>
+          <label for="f-nombre">Nombre completo *</label>
+          <input id="f-nombre" placeholder="Ej. Paciente P18">
+          <p class="err" data-err="nombre"></p>
+
+          <label for="f-telefono">Teléfono (8 dígitos) *</label>
+          <input id="f-telefono" inputmode="numeric" placeholder="8888-0018">
+          <p class="err" data-err="telefono"></p>
+
+          <label for="f-ultimo">Fecha y hora del último mensaje *</label>
+          <input id="f-ultimo" type="datetime-local">
+          <p class="err" data-err="ultimo"></p>
+        </fieldset>
+
+        <fieldset class="bloque">
+          <legend>Canal de contacto *</legend>
+          <div class="opciones" data-grupo="canal">
+            <button type="button" data-valor="WhatsApp">WhatsApp</button>
+            <button type="button" data-valor="Facebook">Facebook</button>
+            <button type="button" data-valor="Instagram">Instagram</button>
+            <button type="button" data-valor="Llamada">Llamada</button>
+          </div>
+          <p class="err" data-err="canal"></p>
+          <p class="etiqueta">Origen del mensaje</p>
+          <div class="opciones" data-grupo="origen">
+            <button type="button" data-valor="Mensaje privado">Mensaje privado</button>
+            <button type="button" data-valor="Comentario público">Comentario público</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="bloque">
+          <legend>Servicio de interés *</legend>
+          <div class="opciones lista-vertical" data-grupo="servicio">
+            <button type="button" data-valor="Síndrome del túnel carpal">Síndrome del túnel carpal</button>
+            <button type="button" data-valor="Neuropatía diabética">Neuropatía diabética</button>
+            <button type="button" data-valor="Dolor de hombro">Dolor de hombro</button>
+            <button type="button" data-valor="Dolor de rodilla">Dolor de rodilla</button>
+            <button type="button" data-valor="Dolor articular">Dolor articular</button>
+            <button type="button" data-valor="Dolor lumbar">Dolor lumbar</button>
+            <button type="button" data-valor="Otro">Otro</button>
+          </div>
+          <input id="f-servicio-otro" placeholder="¿Cuál?" hidden>
+          <p class="err" data-err="servicio"></p>
+        </fieldset>
+
+        <fieldset class="bloque" id="bloque-estado-inicial">
+          <legend>Estado inicial</legend>
+          <div class="opciones" data-grupo="estadoInicial">
+            <button type="button" data-valor="Nuevo">Nuevo</button>
+            <button type="button" data-valor="Quiere agendar">Quiere agendar</button>
+            <button type="button" data-valor="Prioritario">Prioritario</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="bloque">
+          <legend>Datos adicionales y permisos</legend>
+          <label class="interruptor"><span><b>¿Ya se atendió con la doctora?</b><small>Si es sí, queda como paciente recurrente</small></span><input type="checkbox" id="f-atendido"></label>
+          <label class="interruptor"><span><b>¿Tiene diagnóstico o referencia previa?</b><small>Estudios, electromiografía o remisión</small></span><input type="checkbox" id="f-referencia"></label>
+          <label class="interruptor"><span><b>Acepta recibir información</b><small>Recordatorios, guías gratuitas e información útil</small></span><input type="checkbox" id="f-info"></label>
+          <label class="interruptor"><span><b>Acepta newsletter</b><small>Información útil de la clínica por correo</small></span><input type="checkbox" id="f-newsletter"></label>
+          <label for="f-correo">Correo electrónico (opcional)</label>
+          <input id="f-correo" type="email" placeholder="ejemplo@correo.com">
+          <p class="err" data-err="correo"></p>
+          <label for="f-nota">Nota</label>
+          <textarea id="f-nota" rows="3" placeholder="Detalles relevantes o acuerdos con la persona…"></textarea>
+        </fieldset>
+        <p id="lead-error" class="aviso-error" hidden></p>
+      </div>
+      <div class="hoja-pie">
+        <button type="submit" class="btn btn-primario btn-bloque" id="btn-guardar-lead">Guardar lead</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ PANTALLA 3 · RESULTADO ============ -->
+  <dialog id="dlg-resultado" class="hoja">
+    <div class="hoja-enc">
+      <h2>Resultado</h2>
+      <button type="button" class="btn btn-claro" data-cerrar aria-label="Cerrar">Cerrar</button>
+    </div>
+    <div class="hoja-cuerpo" id="resultado-cuerpo"></div>
+    <div class="hoja-pie">
+      <p id="res-error" class="aviso-error" hidden></p>
+      <button class="btn btn-primario btn-bloque" id="btn-guardar-resultado">Guardar resultado</button>
+      <div class="fila-botones">
+        <button class="btn btn-claro" id="btn-editar">Editar datos</button>
+        <button class="btn btn-claro" id="btn-retomar" hidden>Retomar seguimiento</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
