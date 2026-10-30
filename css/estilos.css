@@ -109,7 +109,7 @@ legend { font-weight: 700; font-size: 15px; padding: 0 4px; }
 }
 
 /* ---------- Contadores ---------- */
-.contadores { display: flex; gap: 10px; overflow-x: auto; padding: 14px 0 4px; scroll-snap-type: x mandatory; }
+.contadores { display: flex; gap: 10px; overflow-x: auto; padding: 14px 4px 6px; margin: 0 -4px; scroll-snap-type: x mandatory; scroll-padding-left: 4px; }
 .contador {
   flex: 0 0 auto; min-width: 132px; scroll-snap-align: start; text-align: left; font: inherit; cursor: pointer; color: var(--texto);
   background: var(--blanco); border: 1.5px solid var(--borde); border-radius: var(--radio); padding: 12px 14px;
@@ -145,12 +145,13 @@ legend { font-weight: 700; font-size: 15px; padding: 0 4px; }
 .vacio { color: var(--texto-suave); font-size: 14px; padding: 8px 0; }
 
 .ficha {
-  background: var(--blanco); border: 1px solid var(--borde); border-left: 5px solid var(--verde);
-  border-radius: var(--radio); padding: 14px; margin-bottom: 10px; box-shadow: var(--sombra);
+  background: var(--blanco); border: 1px solid var(--borde);
+  border-radius: var(--radio); padding: 14px 14px 14px 20px; margin-bottom: 10px;
+  box-shadow: inset 5px 0 0 var(--franja, var(--verde)), var(--sombra);
 }
-.ficha.quiere { background: var(--lila); border-left-color: var(--morado); }
-.ficha.prioritario { border-left-color: var(--verde-osc); }
-.ficha.apagada { border-left-color: var(--borde); }
+.ficha.quiere { background: var(--lila); --franja: var(--morado); }
+.ficha.prioritario { --franja: var(--verde-osc); }
+.ficha.apagada { --franja: var(--borde); }
 .ficha-enc { display: flex; gap: 12px; align-items: flex-start; }
 .iniciales {
   flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
