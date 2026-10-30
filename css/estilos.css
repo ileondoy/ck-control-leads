@@ -111,7 +111,7 @@ legend { font-weight: 700; font-size: 15px; padding: 0 4px; }
 /* ---------- Contadores ---------- */
 .contadores { display: flex; gap: 10px; overflow-x: auto; padding: 14px 0 4px; scroll-snap-type: x mandatory; }
 .contador {
-  flex: 0 0 auto; min-width: 132px; scroll-snap-align: start; text-align: left; font: inherit; cursor: pointer;
+  flex: 0 0 auto; min-width: 132px; scroll-snap-align: start; text-align: left; font: inherit; cursor: pointer; color: var(--texto);
   background: var(--blanco); border: 1.5px solid var(--borde); border-radius: var(--radio); padding: 12px 14px;
 }
 .contador b { display: block; font-size: 26px; line-height: 1.1; }
@@ -224,4 +224,10 @@ dialog.hoja::backdrop { background: rgba(25, 54, 50, .45); }
 @media (max-width: 759px) {
   dialog.hoja { margin: auto 0 0; max-width: 100%; border-radius: 18px 18px 0 0; max-height: 94vh; }
   .acciones .btn { font-size: 13.5px; }
+  .enc-logo { width: 58px; }
+  .enc-texto h1 { font-size: 18px; }
+  .encabezado .sub { font-size: 12.5px; }
+  .encabezado .btn { min-height: 40px; padding: 6px 12px; }
 }
+button { color: inherit; -webkit-tap-highlight-color: transparent; }
+.btn-primario, .contador.verde { color: var(--blanco); }
