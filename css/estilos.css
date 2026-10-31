@@ -64,6 +64,9 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus, .btn:focus-visible, .opciones button:focus-visible {
   outline: 3px solid rgba(0, 106, 95, .25); border-color: var(--verde);
 }
+input[type="datetime-local"], input[type="date"] {
+  -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; text-align: left;
+}
 input.invalido { border-color: var(--error); background: var(--error-fondo); }
 .err { color: var(--error); font-size: 13px; margin: 4px 0 0; min-height: 0; }
 .err:empty { display: none; }
