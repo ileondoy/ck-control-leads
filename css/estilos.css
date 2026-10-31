@@ -215,6 +215,9 @@ dialog.hoja::backdrop { background: rgba(25, 54, 50, .45); }
 .historial small { color: var(--texto-suave); display: block; }
 .opciones button.no-contactar { flex-basis: 100%; background: var(--error-fondo); color: var(--error); border-color: #F2C7C7; }
 .opciones button.no-contactar.sel { background: var(--error); color: var(--blanco); }
+.aviso-retomar { background: var(--lila); border-radius: var(--radio); padding: 12px 14px; margin: 0 0 14px; display: flex; flex-direction: column; gap: 10px; }
+.aviso-retomar p { margin: 0; font-size: 14px; color: var(--morado-osc); }
+.hoja-pie { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 .nota-gris { font-size: 13px; color: var(--texto-suave); margin: 6px 0 0; }
 
 /* ---------- Aviso flotante ---------- */

@@ -583,6 +583,10 @@
     $('#resultado-cuerpo').innerHTML = `
       ${ficha(p, { compacta: true })}
       ${bloqueado ? '<p class="aviso-error">Es paciente recurrente: recibe el MP-02 y no entra al seguimiento de venta.</p>' : ''}
+      <div class="aviso-retomar" id="caja-retomar" hidden>
+        <p>${p.importado ? 'Contacto anterior importado: no entra solo a Hoy toca.' : 'Esta persona ya salió del seguimiento.'} Si decides volver a escribirle, retómala.</p>
+        <button type="button" class="btn btn-contorno btn-bloque" id="btn-retomar-cuerpo">Retomar seguimiento</button>
+      </div>
       <div class="bloque">
         <p class="etiqueta" style="margin-top:0">Estado · elige uno</p>
         <div class="opciones" id="res-estados">${botonesEstado}</div>
@@ -609,7 +613,8 @@
     $('#btn-guardar-resultado').disabled = bloqueado;
     const retomable = !['No contactar', 'Recurrente', 'Agendó'].includes(p.estado)
       && ((p.importado && !p.retomar) || estaCerrado(p));
-    $('#btn-retomar').hidden = !retomable;
+    $('#btn-retomar').hidden = true;
+    $('#caja-retomar').hidden = !retomable;
     actualizarSecciones();
     dlgRes.showModal();
     cargarHistorial(p.id);
@@ -683,6 +688,9 @@
   });
 
   $('#btn-editar').addEventListener('click', () => { dlgRes.close(); abrirLead(estado.abierta); });
+  $('#resultado-cuerpo').addEventListener('click', (e) => {
+    if (e.target.closest('#btn-retomar-cuerpo')) $('#btn-retomar').click();
+  });
   $('#btn-retomar').addEventListener('click', async () => {
     const p = estado.abierta;
     if (!confirm(`¿Retomar el seguimiento de ${p.nombre}? Aparecerá hoy en "Hoy toca".`)) return;
