@@ -183,6 +183,10 @@ legend { font-weight: 700; font-size: 15px; padding: 0 4px; }
 .borrador.sin p { color: var(--texto-suave); font-style: italic; }
 .acciones { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 8px; margin-top: 12px; }
 .acciones.dos { grid-template-columns: 1.2fr 1fr; }
+.aviso-comentario {
+  margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; font-size: 13.5px;
+  background: #FFF4E0; color: #7A4B00; border: 1px solid #F2D9A8;
+}
 .acciones .btn { padding: 8px 6px; font-size: 14px; min-height: 44px; }
 
 /* ---------- Hojas (Nuevo lead / Resultado) ---------- */

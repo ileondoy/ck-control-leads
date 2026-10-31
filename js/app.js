@@ -259,7 +259,9 @@
         ? `<div class="borrador"><b>BORRADOR DE LÍA</b><p>${esc(p.borrador_lia)}</p></div>`
         : '<div class="borrador sin"><b>BORRADOR DE LÍA</b><p>Sin borrador</p></div>';
       const noContactar = p.estado === 'No contactar';
-      const textoEnviar = dia30 ? 'Enviar por correo' : p.borrador_lia ? 'Enviar por WhatsApp' : 'Abrir chat';
+      const soloComentario = esSoloComentario(p);
+      const textoEnviar = soloComentario ? 'Copiar respuesta' : dia30 ? 'Enviar por correo' : p.borrador_lia ? 'Enviar por WhatsApp' : 'Abrir chat';
+      if (soloComentario) cuerpo += '<p class="aviso-comentario">Llegó por un comentario público y no dio permiso: responder en el comentario, sin precio. No escribir por WhatsApp.</p>';
       const debe = seDebeHoy(p);
       cuerpo += `<div class="acciones ${debe ? '' : 'dos'}">
         <button class="btn btn-primario" data-accion="enviar" data-id="${p.id}" ${noContactar ? 'disabled' : ''}>${textoEnviar}</button>
@@ -400,8 +402,26 @@
     if (e.key === 'Enter' && e.target.matches('article[data-accion]')) e.target.click();
   });
 
+  // Llegó por un comentario público y no aceptó recibir información:
+  // se le responde en el comentario, nunca por WhatsApp (hallazgo de Lía, 30/10).
+  function esSoloComentario(p) {
+    return p.origen === 'Comentario público' && !p.acepta_info && p.proximo_tipo !== 'Recordatorio día 30';
+  }
+
+  async function copiarRespuesta(p, boton) {
+    const texto = p.borrador_lia || '';
+    if (!texto) { toast('Todavía no hay borrador para responder el comentario.', true); return; }
+    try {
+      await navigator.clipboard.writeText(texto);
+      toast('Respuesta copiada. Pégala en el comentario y luego marca "Contacto hecho".');
+    } catch (e) {
+      window.prompt('Copia la respuesta para el comentario:', texto);
+    }
+  }
+
   function enviar(p, boton) {
     if (p.estado === 'No contactar') { toast('Esta persona pidió no ser contactada.', true); return; }
+    if (esSoloComentario(p)) { copiarRespuesta(p, boton); return; }
     const texto = p.borrador_lia || '';
     if (p.origen === 'Comentario público' && /precio|₡|colones|costo|cuesta/i.test(texto)) {
       if (!confirm('Esta persona llegó por un comentario público. Los precios solo se dan por mensaje privado. ¿Enviar de todas formas?')) return;
