@@ -470,6 +470,15 @@
     $$('#form-lead input').forEach((i) => i.classList.remove('invalido'));
     $('#lead-error').hidden = true;
   }
+  // Si falta algo, lleva la vista al primer campo con error y avisa junto a Guardar
+  function avisarFaltantes() {
+    const errs = $$('#form-lead .err').filter((e) => e.textContent);
+    const nombres = { nombre: 'nombre', telefono: 'teléfono', ultimo: 'fecha y hora', canal: 'canal de contacto', servicio: 'servicio', correo: 'correo' };
+    const faltan = errs.map((e) => nombres[e.dataset.err] || e.dataset.err);
+    $('#lead-error').textContent = `Falta completar: ${faltan.join(', ')}.`;
+    $('#lead-error').hidden = false;
+    if (errs[0]) errs[0].closest('fieldset').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   function errorCampo(clave, texto, input) {
     const e = $(`#form-lead [data-err="${clave}"]`);
     if (e) e.textContent = texto;
@@ -517,7 +526,7 @@
     if (!seleccion.canal) { errorCampo('canal', 'Elige el canal.'); ok = false; }
     if (!seleccion.servicio) { errorCampo('servicio', 'Elige el servicio de interés.'); ok = false; }
     if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) { errorCampo('correo', 'Revisa el correo.', $('#f-correo')); ok = false; }
-    if (!ok) return;
+    if (!ok) { avisarFaltantes(); return; }
 
     // Teléfono repetido (incluye a quienes pidieron no ser contactados)
     if (tel.length === 8) {
