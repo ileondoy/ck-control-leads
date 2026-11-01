@@ -1,4 +1,4 @@
-/* Clínica Kawoq · Control de Leads
+/* Clínica Kawoq · Contactos
    Las reglas de la cadencia (días 1, 3, 7 y 30, domingos, días no hábiles,
    tope de 3 contactos y "No contactar") viven en la base de datos de Supabase,
    para que la app y Lía calculen exactamente igual. */
@@ -504,7 +504,7 @@
   function abrirLead(p = null) {
     estado.editando = p;
     limpiarErrores();
-    $('#lead-titulo').textContent = p ? 'Editar datos' : 'Nuevo lead';
+    $('#lead-titulo').textContent = p ? 'Editar datos' : 'Nuevo contacto';
     $('#bloque-estado-inicial').hidden = !!p;
     $('#f-nombre').value = p ? p.nombre : '';
     $('#f-telefono').value = p ? telVisible(p.telefono) : '';
