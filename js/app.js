@@ -1,4 +1,4 @@
-/* Clínica Kawoq · Contactos
+/* Clínica Kawoq · Conecta con Lía
    Las reglas de la cadencia (días 1, 3, 7 y 30, domingos, días no hábiles,
    tope de 3 contactos y "No contactar") viven en la base de datos de Supabase,
    para que la app y Lía calculen exactamente igual. */
