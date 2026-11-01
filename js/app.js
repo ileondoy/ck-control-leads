@@ -166,7 +166,23 @@
     i.type = ver ? 'text' : 'password';
     $('#ver-clave').textContent = ver ? 'Ocultar' : 'Ver';
   });
-  $('#btn-salir').addEventListener('click', () => sb.auth.signOut());
+  $('#btn-salir').addEventListener('click', () => {
+    if (confirm('¿Cerrar sesión? Tendrá que volver a ingresar con usuario y clave.')) sb.auth.signOut();
+  });
+
+  // El botón Atrás del celular cierra la hoja abierta en lugar de salir de la app
+  const hojaAbierta = () => $$('dialog').some((d) => d.open);
+  $$('dialog').forEach((d) => {
+    const abrir = d.showModal.bind(d);
+    d.showModal = () => {
+      abrir();
+      if (!(history.state && history.state.hoja)) history.pushState({ hoja: true }, '');
+    };
+    d.addEventListener('close', () => setTimeout(() => {
+      if (!hojaAbierta() && history.state && history.state.hoja) history.back();
+    }, 0));
+  });
+  window.addEventListener('popstate', () => { $$('dialog').forEach((d) => { if (d.open) d.close(); }); });
 
   /* ================= Datos ================= */
   async function cargarDatos() {
