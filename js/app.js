@@ -339,6 +339,7 @@
     const servicios = [...new Set(ps.map((p) => p.servicio))].sort();
     const fl = estado.filtros;
     $('#filtros').innerHTML = `
+      <div class="filtros-enc"><span>Filtrar la lista</span><button type="button" class="btn-limpiar" data-limpiar hidden>Quitar filtros</button></div>
       <div><label for="fl-estado">Estado</label><select id="fl-estado" data-filtro="estado">${opt(estadosUsados, fl.estado, 'Todos')}</select></div>
       <div><label for="fl-motivo">Motivo para no agendar</label><select id="fl-motivo" data-filtro="motivo">${opt(MOTIVOS, fl.motivo, 'Todos')}</select></div>
       <div><label for="fl-servicio">Servicio</label><select id="fl-servicio" data-filtro="servicio">${opt(servicios, fl.servicio, 'Todos')}</select></div>
@@ -358,7 +359,11 @@
     const detalle = Object.entries(porEstado).sort((a, b) => b[1] - a[1]).map(([e, n]) => `${e}: ${n}`).join(' · ');
     const resumen = $('#resumen-filtro');
     if (resumen) resumen.textContent = `${items.length} ${items.length === 1 ? 'persona' : 'personas'}${detalle ? ' — ' + detalle : ''}`;
-    return items.length ? items.map((p) => ficha(p, { compacta: true })).join('') : '<p class="vacio">Ninguna persona coincide con los filtros.</p>';
+    const hayFiltro = Object.values(fl).some(Boolean) || !!estado.busqueda;
+    const limpiar = $('#filtros [data-limpiar]');
+    if (limpiar) limpiar.hidden = !hayFiltro;
+    return items.length ? items.map((p) => ficha(p, { compacta: true })).join('')
+      : `<p class="vacio">Ninguna persona coincide con la búsqueda y los filtros.${hayFiltro ? ' <button type="button" class="btn-limpiar" data-limpiar>Quitar filtros</button>' : ''}</p>`;
   }
 
   function renderCerrados() {
@@ -395,6 +400,13 @@
     render();
   });
   $('#buscar').addEventListener('input', (e) => { estado.busqueda = e.target.value; render(); });
+  // Quitar filtros y búsqueda (desde el panel o desde el aviso de lista vacía)
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-limpiar]')) return;
+    estado.filtros = { estado: '', motivo: '', servicio: '', desde: '' };
+    estado.busqueda = ''; $('#buscar').value = '';
+    renderFiltros(); render();
+  });
   $('#filtros').addEventListener('change', (e) => {
     const k = e.target.dataset.filtro;
     if (!k) return;

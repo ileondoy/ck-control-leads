@@ -135,7 +135,12 @@ legend { font-weight: 700; font-size: 15px; padding: 0 4px; }
 }
 .pestanas button.activa { background: var(--blanco); color: var(--verde); box-shadow: var(--sombra); }
 .buscador { background: var(--blanco); margin-bottom: 10px; }
-.filtros { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
+.filtros { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px;
+  background: var(--lila, #EFE4F5); border-radius: 12px; padding: 10px 12px; }
+.filtros-enc { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center;
+  font-weight: 700; font-size: 14px; color: #6B3F86; }
+.btn-limpiar { background: none; border: 0; color: #6B3F86; font: inherit; font-weight: 700; font-size: 14px;
+  text-decoration: underline; cursor: pointer; padding: 2px 0; }
 .filtros label { margin: 0 0 4px; font-size: 12.5px; }
 .resumen-filtro { grid-column: 1 / -1; font-size: 14px; color: var(--texto-suave); }
 
